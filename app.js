@@ -1,15 +1,23 @@
 const express = require("express");
 const app = express()
 
-app.use( (req, res, next) => {
-    console.log("Hi, I am 1st middleware");
-    next()
+// app.use( (req, res, next) => {
+//     console.log("Hi, I am 1st middleware");
+//     next()
+// });
+
+// app.use( (req, res, next) => {
+//     console.log("Hi, I am 2st middleware");
+//     next()
+// });
+
+//logger 
+app.use((req, res, next) => {
+    req.time  = Date.now();
+    console.log(req.method, req.hostname, req.path, req.time);
+    next();
 });
 
-app.use( (req, res, next) => {
-    console.log("Hi, I am 2st middleware");
-    next()
-});
 app.get("/", (req, res) => {
     res.send("Hi, I am root.");
 });
