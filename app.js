@@ -11,10 +11,9 @@ const app = express()
 //     next()
 // });
 
-//logger 
-app.use((req, res, next) => {
-    req.time  = Date.now();
-    console.log(req.method, req.hostname, req.path, req.time);
+
+app.use("/" ,(req, res, next) => {
+    console.log("I am only for random");
     next();
 });
 
@@ -26,6 +25,16 @@ app.get("/random", (req, res) => {
     res.send("this is a random page")
 });
 
+//logger 
+app.use((req, res, next) => {
+    req.time  = Date.now();
+    console.log(req.method, req.hostname, req.path, req.time);
+    next();
+});
+//404
+app.use((req, res) => {
+    res.send("Page not found");
+});
 app.listen(8080, () => {
     console.log("Server listening to port 8080");
 });
