@@ -1,23 +1,13 @@
 const express = require("express");
-const app = express()
-
-// app.use( (req, res, next) => {
-//     console.log("Hi, I am 1st middleware");
-//     next()
-// });
-
-// app.use( (req, res, next) => {
-//     console.log("Hi, I am 2st middleware");
-//     next()
-// });
-
+const app = express();
+const ExpressError = require("./ExpressError");
 
 const checkToken =  (req, res, next) => {
     let {token} = req.query;
     if(token === "giveaccess"){
         next();
     }
-    res.send("ACCESS DENIED!");
+    throw new ExpressError(401, "ACCESS DENIED!");
 };
 
 app.get("/api", checkToken, (req, res) =>{ 
@@ -38,10 +28,9 @@ app.get("/err", (req, res) => {
 
 app.use((err, req, res, next) => {
     console.log("------ERROR------");
-    next(err);
+    res.send(err);
 });
 
-// //logger 
 // app.use((req, res, next) => {
 //     req.time  = Date.now();
 //     console.log(req.method, req.hostname, req.path, req.time);
@@ -53,4 +42,4 @@ app.use((req, res) => {
 });
 app.listen(8080, () => {
     console.log("Server listening to port 8080");
-});
+}); 
